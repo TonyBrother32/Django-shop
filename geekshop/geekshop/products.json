@@ -1,0 +1,13 @@
+[
+    { "name" : "Светильник",
+    "description" : "Современный дизайн",
+    "image" : "img/product-11.jpg"
+}, { 
+    "name" : "Стул",
+    "description" : "Современные материалы",
+    "image" : "img/product-21.jpg"
+}, { 
+    "name" : "Лампа",
+    "description" : "Для любого интерьера",
+    "image" : "img/product-31.jpg"
+}]
