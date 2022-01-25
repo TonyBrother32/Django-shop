@@ -1,4 +1,6 @@
 {% extends "mainapp/base.html" %}
+{% load static %}
+
 {% block header %}
 
 		<div class="slider">
@@ -13,7 +15,7 @@
 				<p> {% for key, value in sample_dict.items	%}
 					{{ key| title }} : {{value}} </br>
 					{% endfor %} </p>
-				<a href="#" class="button-order">заказать <img src="/static/img/arrow.png" alt=""></a>
+				<a href="#" class="button-order">заказать <img src="{%static "img/arrow.png" %}" alt=""></a>
 			</div>	
 			<div class="navi">
 				<a href="#"></a><a href="#"></a><a href="#"></a>
@@ -25,28 +27,21 @@
 			<div class="featured-menu">
 					<a class="active" href="#">Популярные</a><a href="#">Новинки</a>
 			</div>
-			<a class="explore" href="#">показать все <img src="/static/img/arrow.png" alt=""></a>
+			<a class="explore" href="#">показать все <img src="{%static "img/arrow.png" %}" alt=""></a>
 			<div class="clearfix">
 			</div>
 			<div class="tab-content">
+				{% for product in products %}
 				<div class="block">
-					<a href="#"><img src="/static/img/product-1.jpg" alt=""> 
+					<a href="#"><img src="/media/{{ product.image }}" alt=""> 
 						<div class="text">
-							<img src="/static/img/icon-hover.png" alt="img">
-							<h4>Отличный стул</h4>
-							<p>Расположитесь комфортно. </p>
+							<img src="{%static "img/icon-hover.png" %}" alt="img">
+							<h4>{{ product.name }}</h4>
+							<p>{{ product.description }} </p>
 						</div> 
 					</a>
 				</div>
-				<div class="block">
-					<a href="#"><img src="/static/img/product-2.jpg" alt="">
-						<div class="text">
-							<img src="/static/img/icon-hover.png" alt="">
-							<h4>Стул повышенного качества</h4>
-							<p>Не оторваться. </p>
-						</div>
-					</a>
-				</div>	
+				{% endfor %}
 			</div>
 		</div>
 {% endblock %}	
