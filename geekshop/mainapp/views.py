@@ -50,7 +50,7 @@ def contact (request):
 def products (request):
     categories = ProductCategory.objects.all()[:4]
 
-    with open ( './geekshop/products.json', 'r' ) as file:
+    with open ( './geekshop/product.json', 'r', encoding='utf-8' ) as file:
         products = json.load(file)
        
     return render (request, 'mainapp/products.html', context={
