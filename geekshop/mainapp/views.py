@@ -1,14 +1,14 @@
 from itertools import product
 import json
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Product, ProductCategory
 
 MENU_LINKS = [
-    { 'url' : 'main', 'name' : 'домой'},
-    { 'url' : 'products', 'name' : 'продукты'},
-    { 'url' : 'contact', 'name' : 'контакты'},
+    { 'url' : 'main', 'active': ['main'],'name' : 'домой'},
+    { 'url' : 'mainapp:products', 'active': ['products:products', 'products:category'], 'name' : 'продукты'},
+    { 'url' : 'contact', 'active': ['contact'],'name' : 'контакты'},
 ]
 
 
@@ -48,12 +48,25 @@ def contact (request):
     })
 
 def products (request):
-    categories = ProductCategory.objects.all()[:4]
+    categories = ProductCategory.objects.all()
+    products = Product.objects.all()[:4]
+    
+    return render (request, 'mainapp/products.html', 
+    context={
+        'title' : 'Продукты',
+        'datetime': timezone.now(),
+        'products' : products,
+        'menu_links' : MENU_LINKS,
+        'categories' : categories,
+        })
 
-    with open ( './geekshop/product.json', 'r', encoding='utf-8' ) as file:
-        products = json.load(file)
-       
-    return render (request, 'mainapp/products.html', context={
+def category (request, pk):
+    categories = ProductCategory.objects.all()
+    category = get_object_or_404(ProductCategory, pk=pk)
+    products = Product.objects.filter(category=category)
+           
+    return render (request, 'mainapp/products.html', 
+    context={
         'title' : 'Продукты',
         'datetime': timezone.now(),
         'products' : products,
