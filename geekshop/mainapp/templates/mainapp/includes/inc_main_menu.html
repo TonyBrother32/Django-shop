@@ -21,8 +21,7 @@
 <li>
     <a href="{% url 'basket:view' %}">
         корзина
-        {% if user.basket.all|length %}({{ user.basket.all|length }})
-        {% endif %}
+        {{ user.basket.total_cost }} руб. ({{ user.basket.total_qyantity }})
     </a>
 </li>
 {% endif %}
