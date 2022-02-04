@@ -1,6 +1,4 @@
-from itertools import product
-import json
-from multiprocessing import context
+import random
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Product, ProductCategory
@@ -47,29 +45,50 @@ def contact (request):
         'menu_links' : MENU_LINKS,
     })
 
-def products (request):
+def get_hot_product(queryset):
+    return random.choice(queryset)
+
+def product (request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
     categories = ProductCategory.objects.all()
-    products = Product.objects.all()[:4]
     
-    return render (request, 'mainapp/products.html', 
+    return render (request, 'mainapp/product.html', 
     context={
         'title' : 'Продукты',
         'datetime': timezone.now(),
-        'products' : products,
+        'product' : product,
+        'menu_links' : MENU_LINKS,
+        'categories' : categories,
+        })
+    
+
+def products (request):
+    categories = ProductCategory.objects.all()
+    products = Product.objects.all()
+    hot_product = get_hot_product(products)
+
+    return render (request, 'mainapp/products.html', 
+    context={
+        'title' : 'Продукты',
+        'hot_product' : hot_product,
+        'products' : products.exclude(pk=hot_product.pk)[:4],
+        'datetime': timezone.now(),
         'menu_links' : MENU_LINKS,
         'categories' : categories,
         })
 
-def category (request, pk):
+def category (request, category_id):
     categories = ProductCategory.objects.all()
-    category = get_object_or_404(ProductCategory, pk=pk)
+    category = get_object_or_404(ProductCategory, pk=category_id)
     products = Product.objects.filter(category=category)
-           
+    hot_product = get_hot_product(products)
+
     return render (request, 'mainapp/products.html', 
     context={
         'title' : 'Продукты',
         'datetime': timezone.now(),
-        'products' : products,
+        'products' : products.exclude(pk=hot_product.pk)[:4],
+        'hot_product' : get_hot_product(products),
         'menu_links' : MENU_LINKS,
         'categories' : categories,
         })

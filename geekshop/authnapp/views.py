@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponseRedirect
 from authnapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
 from django.contrib import auth
 from django.urls import reverse
+from pickle import GET
+
 
 def login(request):
     title = 'вход'
@@ -14,6 +16,8 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
+            if 'next' in request.GET.keys():
+                return HttpResponseRedirect(request.GET['next'])
             return HttpResponseRedirect(reverse('main'))
 
     content = {'title': title, 'login_form': login_form}
