@@ -10,14 +10,21 @@
     </li>
     {% endfor %}
     
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
 <li>
     <a href="{% url 'auth:edit' %}">
         {{ user.first_name|default:'Пользователь' }}          
     </a>
 </li>
-{% endif %}  
-{% if user.is_authenticated %}
+{% if user.is_superuser %}
+<li>
+    <a href="{% url 'admin:users' %}">
+        Админка         
+    </a>
+</li>
+{% endif %}
+{% comment %} {% endif %}   {% endcomment %}
+{% comment %} {% if user.is_authenticated %} {% endcomment %}
 <li>
     <a href="{% url 'basket:view' %}">
         корзина
